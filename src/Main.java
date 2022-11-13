@@ -3,10 +3,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        StepTracker currentTracker = new StepTracker();
+        StepTracker currentTracker = new StepTracker(sc);
         int monthNumber;
-
-
 
         while (true) {
             printMenu();

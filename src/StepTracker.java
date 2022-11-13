@@ -7,10 +7,10 @@ public class StepTracker {
     Converter converter;
 
     //Объявлеяем конструктор класса
-    StepTracker () {
+    StepTracker (Scanner sc) {
         goal = 10000; // цель по умолчанию = 10 тыс шагов
         stat = createCalendar();
-        scanner = new Scanner(System.in);
+        scanner = sc;
         converter = new Converter();
     }
 
@@ -89,13 +89,19 @@ public class StepTracker {
 
             //Считаем серию дней выполнения цели
             if (stat[monthNumber][i] >= goal) {
-
-                if (stat[monthNumber][i+1] >= goal) {
+                if ((i+1) == stat[0].length) {
+                    if (currentRecord < (seriesDaysGoalAchived +1)) {
+                        currentRecord = seriesDaysGoalAchived + 1; // Прибавляем 1 для корректного значения дней в серии с учетом первого
+                        seriesDaysGoalAchived = 0;
+                    }
+                } else if (stat[monthNumber][i+1] >= goal) {
                     seriesDaysGoalAchived++;
+                } else  if (currentRecord < (seriesDaysGoalAchived + 1)) {
+                    currentRecord = seriesDaysGoalAchived + 1; // Прибавляем 1 для корректного значения дней в серии с учетом первого
+                    seriesDaysGoalAchived = 0;
+                } else {
+                    seriesDaysGoalAchived = 0;
                 }
-            } else  if (currentRecord < seriesDaysGoalAchived) {
-                currentRecord = seriesDaysGoalAchived + 1; // Прибавляем 1 для корректного значения дней в серии с учетом первого
-                seriesDaysGoalAchived = 0;
             }
         }
         System.out.println();
@@ -106,6 +112,7 @@ public class StepTracker {
         System.out.println("Количество потраченных килокалорий: " + converter.convertStepsToKilocals(stepSum));
         System.out.println("Лучшая серия: " + currentRecord + " дней");
     }
+
     // Метод для заполнения календаря
     int[][] createCalendar() {
         int months = 12; // месяцев в году
